@@ -28,9 +28,38 @@ $sql_details = array(
     'host' => 'localhost'
 );
 
-// // Fixed WHERE condition
+// Filter option
 $filter_option = isset($_POST['filter_option']) ? $_POST['filter_option'] : '';
-$where = "std_class = '" . $filter_option . "'";
+
+// Build the WHERE clause based on the filter option using a switch case
+switch ($filter_option) {
+    case 'ชทท.1/1':
+        $where = "std_class = 'ชทท.1/1'";
+        break;
+    case 'ชทท.1/2':
+        $where = "std_class = 'ชทท.1/2'";
+        break;
+    case 'ชทท.2/1':
+        $where = "std_class = 'ชทท.2/1'";
+        break;
+    case 'ชทท.2/2':
+        $where = "std_class = 'ชทท.2/2'";
+        break;
+    case 'ชทท.3/1':
+        $where = "std_class = 'ชทท.3/1'";
+        break;
+    case 'ชทท.3/2':
+        $where = "std_class = 'ชทท.3/2'";
+        break;
+    case 'สทท.1/1':
+        $where = "std_class = 'สทท.1/1'";
+        break;
+    case 'สทท.2/1':
+        $where = "std_class = 'สทท.2/1'";
+        break;
+    default:
+        $where = "";
+};
 
 // Call SSP::complex with the modified $where variable
 include('ssp.class.php');

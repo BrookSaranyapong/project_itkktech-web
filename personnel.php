@@ -1,20 +1,21 @@
 <?php 
       require_once('php/connect.php');
 
+      $positions = array('หัวหน้าแผนกวิชา', 'ประจำแผนกวิชา', 'ประจำแผนก');
+
+      // Build a single SQL query with the IN operator
       $sql = "SELECT * FROM `teacher`
-              WHERE `t_position` = 'หัวหน้าแผนกวิชา'  
+              WHERE `t_position` IN ('" . implode("', '", $positions) . "')
               ORDER BY t_id ";
+      
+      // Execute the SQL query and fetch the results
       $result = $conn->query($sql);
 
-      $sql1 = "SELECT * FROM `teacher`
-              WHERE `t_position` = 'ประจำแผนกวิชา'  
-              ORDER BY t_id ";
-      $result1 = $conn->query($sql1);
-
-      $sql2 = "SELECT * FROM `teacher`
-              WHERE `t_position` = 'ประจำแผนก'  
-              ORDER BY t_id ";
-      $result2 = $conn->query($sql2);
+      // Store the results in an array
+      $teachers = array();
+      while($row = $result->fetch_assoc()) {
+        $teachers[] = $row;
+      }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,54 +59,21 @@
         <h1 class="border-short-bottom text-center">บุคลากรทางการศึกษาในแผนกวิชาเทคโนโลยีสารสนเทศ <br> วิทยาลัยเทคนิคขอนแก่น</h1>
 
         <div class="row justify-content-center">
-            <?php while($row = $result->fetch_assoc()) { ?>
+            <?php foreach($teachers as $teacher) { ?>
                 <div class="col-12 col-md-3 col-sm-6 p-2">
                     <div class="card h-100">
-                            <img src="<?= $base_path_personnel.$row['t_image']; ?>" class="p-3 card-img-top" alt="...">
+                        <img src="<?= $base_path_personnel.$teacher['t_image']; ?>" class="p-3 card-img-top" alt="...">
                         <div class="card-body">
-                            <h6 class="text-center card-title"><?= $row['t_sex']?><?= $row['t_first_name'] ?> <?= $row['t_lastname'] ?></h6>
-                            <h6 class="text-center">ตำแหน่ง <?= $row['t_position']?></h6>
+                            <h6 class="text-center card-title"><?= $teacher['t_sex']?><?= $teacher['t_first_name'] ?> <?= $teacher['t_lastname'] ?></h6>
+                            <h6 class="text-center">ตำแหน่ง <?= $teacher['t_position']?></h6>
                         </div>
                     </div>
                 </div>
             <?php } ?>
         </div>
-                 
-
-
-        <div class="row justify-content-center">
-            <?php while($row = $result1->fetch_assoc()) { ?>
-                <div class="col-12 col-md-3 col-sm-6 p-2">
-                    <div class="card h-100">
-                            <img src="<?= $base_path_personnel.$row['t_image']; ?>" class="p-3 card-img-top" alt="...">
-                        <div class="card-body">
-                            <h6 class="text-center card-title"><?= $row['t_sex']?><?= $row['t_first_name'] ?> <?= $row['t_lastname'] ?></h6>
-                            <h6 class="text-center">ตำแหน่ง <?= $row['t_position']?></h6>
-                        </div>
-                    </div>
-                </div>
-            <?php   }   ?> 
-        </div>
-
-
-        <div class="row justify-content-center">
-            <?php while($row = $result2->fetch_assoc()) { ?>
-                <div class="col-12 col-md-3 col-sm-6 p-2">
-                    <div class="card h-100">
-                            <img src="<?= $base_path_personnel.$row['t_image']; ?>" class="p-3 card-img-top" alt="...">
-                        <div class="card-body">
-                            <h6 class="text-center card-title"><?= $row['t_sex']?><?= $row['t_first_name'] ?> <?= $row['t_lastname'] ?></h6>
-                            <h6 class="text-center">ตำแหน่ง <?= $row['t_position']?></h6>
-                        </div>
-                    </div>
-                </div>
-            <?php   }   ?> 
-        </div>
         
     </section>
     
-
-
 
   <!-- Section Footer -->
         <?php include_once('includes/footer.php'); ?>

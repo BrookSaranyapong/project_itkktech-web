@@ -1,12 +1,3 @@
-<?php 
-      
-        // $tag = $_GET['tag'] ? $_GET['tag'] : 'ชทท.1/1';
-        // $sql = "SELECT * FROM `student` WHERE `std_class` = '".$tag."' ORDER BY `student`.`std_id` ASC";
-        // $result = $conn->query($sql);
-        // if(!$result){
-        //     header('Location: student-detail.php');
-        // }
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,15 +119,16 @@
 
 
 <script>
-    const initFilter = 'สทท.1/1';
+    // const initFilter = 'สทท.1/1';
     const table = $('#dataTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [ 'excel', 'print' ],
+        order: [[ 0, "asc" ]] ,
         "paging": true,
         "lengthChange": true,
         "ordering": true,
         "info": true,
         "autoWidth": true,
-        dom: 'Bfrtip',
-        buttons: [ 'excel', 'print' ],
         "searching": false,
         "processing": true,
         "serverSide": true,
@@ -144,7 +136,8 @@
             "url": "./php/student-json.php",
             "type": "POST",
             "data": function ( d ) {
-                d.filter_option = $("#sortBy").val() || initFilter;
+                // d.filter_option = $("#sortBy").val() || initFilter;
+                d.filter_option = $("#sortBy").val();
             }
         }
     });
@@ -154,7 +147,7 @@
         table.draw();
         
         // Redraw the table based on the custom input
-        $('#sortBy').on("change", function(){
+        $('#sortBy').on("change", () =>{
             table.draw();
         });
     });
